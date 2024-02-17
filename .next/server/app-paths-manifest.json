@@ -1,12 +1,6 @@
 {
-  "/_not-found": "app/_not-found.js",
-  "/(authentication)/recuperar-senha/page": "app/(authentication)/recuperar-senha/page.js",
   "/(authentication)/entrar/page": "app/(authentication)/entrar/page.js",
-  "/(authentication)/cadastrar/page": "app/(authentication)/cadastrar/page.js",
-  "/page": "app/page.js",
-  "/(dashboard)/dashboard/page": "app/(dashboard)/dashboard/page.js",
   "/(dashboard)/dashboard/home/page": "app/(dashboard)/dashboard/home/page.js",
-  "/(dashboard)/dashboard/conta/page": "app/(dashboard)/dashboard/conta/page.js",
   "/(dashboard)/dashboard/produtos/page": "app/(dashboard)/dashboard/produtos/page.js",
-  "/(dashboard)/dashboard/produtos/[id]/page": "app/(dashboard)/dashboard/produtos/[id]/page.js"
+  "/(dashboard)/dashboard/conta/page": "app/(dashboard)/dashboard/conta/page.js"
 }

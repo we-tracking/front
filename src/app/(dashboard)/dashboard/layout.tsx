@@ -1,3 +1,4 @@
+import { Modal } from "@/components/Modal";
 import { SideBarDashboard } from "@/components/SideBarDashboard";
 import { HeaderDashboard } from "@/components/dashboard/Header";
 
