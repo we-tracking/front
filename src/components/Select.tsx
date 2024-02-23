@@ -11,19 +11,19 @@ const options = [
 export function MySelect() {
   const [selectedItems, setSelectedItems] = useState([]);
 
-  const handleChange = (selectedOptions) => {
-    setSelectedItems(selectedOptions);
-  };
+  // const handleChange = (selectedOptions: any) => {
+  //   setSelectedItems(selectedOptions);
+  // };
 
   return (
     <div>
-      <Select
+      {/* <Select
         isMulti
         options={options}
         onChange={handleChange}
         value={selectedItems}
         className=''
-      />
+      /> */}
     </div>
   );
 }

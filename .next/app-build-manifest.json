@@ -6,30 +6,15 @@
       "static/css/app/layout.css",
       "static/chunks/app/layout.js"
     ],
-    "/(authentication)/entrar/page": [
+    "/dashboard/layout": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/chunks/app/(authentication)/entrar/page.js"
+      "static/chunks/app/dashboard/layout.js"
     ],
-    "/(dashboard)/dashboard/layout": [
+    "/dashboard/produtos/[id]/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/chunks/app/(dashboard)/dashboard/layout.js"
-    ],
-    "/(dashboard)/dashboard/home/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/(dashboard)/dashboard/home/page.js"
-    ],
-    "/(dashboard)/dashboard/produtos/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/(dashboard)/dashboard/produtos/page.js"
-    ],
-    "/(dashboard)/dashboard/conta/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/(dashboard)/dashboard/conta/page.js"
+      "static/chunks/app/dashboard/produtos/[id]/page.js"
     ]
   }
 }
