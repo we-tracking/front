@@ -1,4 +1,4 @@
-import axios, { AxiosRequestConfig } from "axios";
+import axios from "axios";
 import Cookies from "js-cookie"
 
 export const api = axios.create({
@@ -10,11 +10,21 @@ export const api = axios.create({
   },
 });
 
-api.interceptors.request.use(
-  (config: AxiosRequestConfig) => {
-    const token = Cookies.get('token'); // substitua pelo método adequado para obter o token
+type CustomAxiosRequestHeaders = {
+  headers: {
+    Authorization?: string;
+  }
+  // Outros cabeçalhos necessários...
+};
 
+
+api.interceptors.request.use(
+  (config) => {
+    const token = Cookies.get('token');
     if (token) {
+      config.headers = config.headers || {};
+
+      // Agora, 'config.headers' não é 'undefined'
       config.headers.Authorization = `Bearer ${token}`;
     }
 

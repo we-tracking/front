@@ -1,5 +1,5 @@
 "use client"
-import React, { useState } from "react"
+import React, { useState, useEffect, useLayoutEffect } from "react"
 import { Modal } from "@/components/Modal"
 import { getAllProducts } from "@/api/getAllProducts"
 import { useQuery } from "@tanstack/react-query"
@@ -9,6 +9,9 @@ import { getWebSource } from "@/api/getWebSource"
 import { Select as SelectIten} from "@/components/dashboard/Select"
 import { WebSourceProps } from "@/types/web-source"
 import { createNewProduct } from "@/api/registerNewProduct"
+import { toast } from 'sonner'
+import { useRouter } from 'next/navigation'
+import { ModalDeleteProduct } from "@/components/ModalDeleteProduct"
 
 export default function DashboardUserProducts() {
   const [webSources, setWebSources] = useState<WebSourceProps[]>([])
@@ -16,33 +19,66 @@ export default function DashboardUserProducts() {
   const [ean, setEan] = useState("")
   const [imagePath, setImagePath] = useState("")
 
-  const [urlExtra, setUrlExtra] = useState("")
-  const [urlCasasBahia, setUrlCasasBahia] = useState("")
-  const [urlPontoFrio, setUrlPontoFrio] = useState("")
-  
+  const [nameProduct, setNameProduct] = useState("")
+  const [idProduct, setIdProduct] = useState(0)
 
+  const [urlStores, setUrlStores] = useState<({ id: number; url: string })[]>([]);
+  const router = useRouter()
+
+  const [isModalDeleteProduct, setIsModalDeleteProduct] = useState(false)
   const [isModalRegisterNewProduct, setIsModalRegisterNewProduct] = useState(false)
   const { data, isLoading } = useQuery({ queryKey: ['allProducts'], queryFn: getAllProducts })
   const { data: dataWebSource, } = useQuery({ queryKey: ['webSource'], queryFn: getWebSource })
+
+  useLayoutEffect(() => {
+    if (webSources) {
+      setUrlStores(webSources.map(source => ({
+        id: source.id,
+        url: ""
+      })));
+    }
+  }, [webSources])
 
   if(isLoading) {
     return <Loading />
   }
 
   async function newProduct() {
-    const id = webSources.map(web => web.id)
     const product = {
       name,
       ean,
       imagePath,
-      webSources: id
+      webSources: urlStores
     }
     try {
       const data = await createNewProduct(product);
-    } catch (error) {
-      console.log("ERROR", error)
+      const promise = () => new Promise((resolve) => setTimeout(() => resolve(data), 2000));
+      toast.promise(promise, {
+        loading: 'Verificando...',
+        success: () => {
+            return `${data.data.message}`
+        },
+      });
+      console.log("produto cadastrado", data)
+      if(data.status === 200) setTimeout(() => router.push(`/${data.data.data.id}`), 4000)
+      
+    } catch (error: any) {
+      toast.error(error?.response.data.message)
     }
   }
+
+  const handleUrlStoresChange = (id: number, value: string) => {
+    setUrlStores((prevUrl) =>
+      prevUrl.map((obj) => (obj.id === id ? { ...obj, url: value } : obj))
+    );
+  };
+
+  function deleteProduct(id: number, nameProduct: string) {
+    setIdProduct(id)
+    setNameProduct(nameProduct)
+    setIsModalDeleteProduct(true)
+  }
+
 
   return (
     <div className="w-full">
@@ -62,13 +98,6 @@ export default function DashboardUserProducts() {
             {data?.data.data.length ? data?.data.data.map((product, index) => (
               <tr key={product.id} className={`w-full block text-base text-project-gray-700 p-5 ${index % 2 === 0 ? 'bg-[#303030]' : 'bg-[#2A2A2B]'}`}>
                 <td className="w-1/2">{product.name}</td>
-                <td className="w-1/4">
-                <button
-                    className="bg-project-blue-100 text-white px-4 py-2 rounded-xl mr-2 hover:scale-105 "
-                  >
-                    Editar
-                  </button>
-                </td>
                 <td className="w-1/2">
                   <Link href={`produtos/${product.id}`}
                     className="inline-block bg-project-blue-600 text-white px-4 py-2 rounded-xl mr-2 hover:scale-105"
@@ -76,8 +105,9 @@ export default function DashboardUserProducts() {
                     Detalhes
                   </Link>
                 </td>
-                <td className="w-1/4">
-                <button
+                <td className="w-1/2">
+                  <button
+                    onClick={() => deleteProduct(product.id, product.name)}
                     className=" bg-project-red-500 text-white px-4 py-2 rounded-xl hover:scale-105"
                   >
                     Excluir
@@ -100,20 +130,28 @@ export default function DashboardUserProducts() {
             <input className="w-full py-2 px-4 border border-project-blue-600 text-white bg-project-gray-900 rounded-xl" placeholder="Ean do produto" type="text" onChange={(e) => setEan(e.target.value)} />
             <input className="w-full py-2 px-4 border border-project-blue-600 text-white bg-project-gray-900 rounded-xl" placeholder="Link da imagem" type="text" onChange={(e) => setImagePath(e.target.value)} />
           
-            {/* <Select multiple={true} options={dataWebSource.data.data} value={selectValue} onChange={(value) => setSelectValue(value)}/> */}
-            <SelectIten options={dataWebSource.data.data} value={webSources} setValue={setWebSources}/>
+            <SelectIten options={dataWebSource?.data.data} value={webSources} setValue={setWebSources}/>
           </div>
-          {webSources?.map((sites) => (
-              <div key={sites.id} className="flex flex-col gap-5 my-5">
-                {sites.id === 1 && <input className="w-full py-2 px-4 border border-project-blue-600 text-white bg-project-gray-900 rounded-xl" placeholder="Informe a url do Extra" />}
-                {sites.id === 2 && <input className="w-full py-2 px-4 border border-project-blue-600 text-white bg-project-gray-900 rounded-xl" placeholder="Informe a url da Casas Bahia" />}
-                {sites.id === 3 && <input className="w-full py-2 px-4 border border-project-blue-600 text-white bg-project-gray-900 rounded-xl" placeholder="Informe a url do Ponto Frio" />}
-              </div>
+          {urlStores?.map((stores) => (
+            <div key={stores.id} className="flex flex-col gap-5 my-5">
+              {stores.id === 1 && <input className="w-full py-2 px-4 border border-project-blue-600 text-white bg-project-gray-900 rounded-xl" placeholder="Informe a url do Extra" value={stores.url} 
+                onChange={(e) => handleUrlStoresChange(stores.id, e.target.value)}/>}
+
+              {stores.id === 2 && <input className="w-full py-2 px-4 border border-project-blue-600 text-white bg-project-gray-900 rounded-xl" placeholder="Informe a url da Casas Bahia" value={stores.url} 
+                onChange={(e) => handleUrlStoresChange(stores.id, e.target.value)}/>}
+
+              {stores.id === 3 && <input className="w-full py-2 px-4 border border-project-blue-600 text-white bg-project-gray-900 rounded-xl" placeholder="Informe a url do Ponto Frio" value={stores.url} 
+                onChange={(e) => handleUrlStoresChange(stores.id, e.target.value)}/>}
+
+              {stores.id === 4 && <input className="w-full py-2 px-4 border border-project-blue-600 text-white bg-project-gray-900 rounded-xl" placeholder="Informe a url do Carrefour" value={stores.url} 
+                onChange={(e) => handleUrlStoresChange(stores.id, e.target.value)}/>}
+            </div>
             ))
           }
           <button onClick={newProduct} className="w-full text-base py-2 rounded-xl text-white bg-project-blue-600">Cadastrar produto</button>
         </Modal>
       )}
+      {isModalDeleteProduct && (<ModalDeleteProduct id={idProduct} nameProduct={nameProduct} setCloseModal={setIsModalDeleteProduct}/>)}
     </div>
   )
 }

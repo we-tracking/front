@@ -33,7 +33,7 @@ export default function Login() {
         Cookies.set("user", "logado")
       }
       setTimeout(() => router.push("dashboard/home"), 4000)
-    } catch (error) {
+    } catch (error: any) {
       toast.error(error.response.data.message)
       setLoading(false)
     }
@@ -63,7 +63,6 @@ export default function Login() {
           {loading ? <LoadingButton /> : "Entrar"}
         </button>
         <p className="text-project-gray-600 text-right">Não é cadastrado? crie sua <Link href="/cadastrar" className="text-project-blue-300 underline">conta!</Link></p>
-        <p className="text-project-gray-600 text-right">Esqueceu a senha? <Link href="/recuperar-senha" className="text-project-blue-300 underline">Recupere!</Link></p>
       </div>
     </div>
   )

@@ -31,7 +31,7 @@ export default function RegisterUser() {
         },
       });
       setTimeout(() => router.push("/entrar"), 4000)
-    } catch (error) {
+    } catch (error: any) {
       toast.error(error.response.data.message)
       setLoading(false)
     }
