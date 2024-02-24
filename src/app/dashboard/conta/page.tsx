@@ -1,7 +1,7 @@
 "use client"
 import { Mail, LockKeyhole } from "lucide-react"
 import { Modal } from "@/components/Modal"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { alterPassword } from "@/api/alterPassword"
 import { toast } from "sonner"
 import { LoadingButton } from "@/components/LoadingButton"
@@ -12,8 +12,18 @@ export default function DashboardUserAccount() {
   const [password, setPassword] = useState("")
   const [confirmPassword, setConfirmPassword] = useState("")
 
+  const [email, setEmail] = useState("")
+
+  useEffect(() => {
+    const storage = localStorage.getItem("email")
+    if(storage) {
+      setEmail(storage)
+    }
+  },[])
+
 
   async function changePassword() {
+    
     setLoading(true)
     try {
       const data = await alterPassword({password, confirmPassword})
@@ -44,7 +54,7 @@ export default function DashboardUserAccount() {
         <div>
           <span className="flex items-center gap-3 mb-4">
             <Mail width={20} height={20} className="text-project-gray-700"/>
-            <p className="text-base text-project-gray-500">dodo_nadoti@hotmail.com</p>
+            <p className="text-base text-project-gray-500">{email}</p>
           </span>
           <span className="flex items-center gap-3">
             <LockKeyhole width={20} height={20} className="text-project-gray-700"/>

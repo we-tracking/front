@@ -103,7 +103,7 @@ export default function PageProductId({ params }: { params: { id: string } }) {
         <div className="w-full max-w-52 rounded-xl">
           <img className="w-full rounded-xl" src={data?.data.data.items.product?.imagePath} alt="imagem do produto" />
         </div>
-        <div className="flex gap-10">
+        <div className="flex gap-10 py-10">
           {dataProductPrice?.data?.data?.map((product) => (
             <div className="min-h-96 flex flex-col items-center justify-between py-5 px-4 bg-project-gray-850 rounded-xl" key={product?.webSourceId}>
               <div className="flex flex-col items-center gap-5">
