@@ -1,1 +1,1 @@
-Para utilizar o programa, clone o repositório com git clone, após clonar, dê o comando npm install, apra baixar todas as atualizações, após baixar inicie com o comando npm run dev.
+Para utilizar o programa, clone o repositório com git clone, após clonar, dê o comando npm install, para baixar todas as atualizações, após baixar inicie com o comando npm run dev, ou pode rodar com npm run build e após fazer o build, rodar npm run start.
