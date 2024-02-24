@@ -44,12 +44,12 @@ export default function PageProductId({ params }: { params: { id: string } }) {
     setEan(data?.data.data.items.product?.ean)
     setImagePath(data?.data.data.items.product?.imagePath)
   
-    const storesRegistered = dataWebSource?.data.data.filter(({ id }) => {
+    const storesRegistered = dataWebSource?.data.data?.filter(({ id }) => {
       return dataProductPrice?.data.data.some(({ webSourceId }) => id === webSourceId);
     });
     setWebSources(storesRegistered)
   
-    const takeUrlRegistered = data?.data.data.items.webSources.filter((item1) => {
+    const takeUrlRegistered = data?.data.data.items.webSources?.filter((item1) => {
       return !dataWebSource?.data.data.some((item2) => Number(item2.webSourceId) === item1.id);
     });
 
@@ -89,10 +89,10 @@ export default function PageProductId({ params }: { params: { id: string } }) {
     <main className="">
       <div className="grid grid-cols-3 items-start justify-between">
         <div className="">
-          <h1 className="block overflow-hidden text-3xl text-project-gray-300 capitalize">{data?.data.data.items.product.name}</h1>
+          <h1 className="block overflow-hidden text-3xl text-project-gray-300 capitalize">{data?.data.data.items.product?.name}</h1>
         </div>
         <div className="flex justify-end">
-          <p className="w-max p-2 text-project-gray-700 border border-project-gray-700 rounded-xl">EAN: {data?.data.data.items.product.ean}</p>
+          <p className="w-max p-2 text-project-gray-700 border border-project-gray-700 rounded-xl">EAN: {data?.data.data.items.product?.ean}</p>
         </div>
         <div className="flex gap-5 justify-end">
           <button onClick={() => setIsModalEditProduct(true)} className="w-min py-2 px-8 rounded-xl text-lg font-bold text-white bg-project-blue-300">Editar</button>
@@ -101,16 +101,16 @@ export default function PageProductId({ params }: { params: { id: string } }) {
       </div>
       <div className="flex items-start justify-between gap-10 mt-16">
         <div className="w-full max-w-52 rounded-xl">
-          <img className="w-full rounded-xl" src={data?.data.data.items.product.imagePath} alt="imagem do produto" />
+          <img className="w-full rounded-xl" src={data?.data.data.items.product?.imagePath} alt="imagem do produto" />
         </div>
         <div className="flex gap-10">
           {dataProductPrice?.data?.data?.map((product) => (
-            <div className="min-h-96 flex flex-col items-center justify-between py-5 px-4 bg-project-gray-850 rounded-xl" key={product.webSourceId}>
+            <div className="min-h-96 flex flex-col items-center justify-between py-5 px-4 bg-project-gray-850 rounded-xl" key={product?.webSourceId}>
               <div className="flex flex-col items-center gap-5">
-                <h2 className="text-2xl text-project-gray-600">{product.webSourceName}</h2>
-                <img className="w-full max-w-40" src={product.webSourceLogo} alt="Logo Marca" />
+                <h2 className="text-2xl text-project-gray-600">{product?.webSourceName}</h2>
+                <img className="w-full max-w-40" src={product?.webSourceLogo} alt="Logo Marca" />
               </div>
-              <p className="flex flex-col text-xs text-project-gray-700">Preço <span className="text-2xl text-project-gray-300">R${product.price}</span></p>
+              <p className="flex flex-col text-xs text-project-gray-700">Preço <span className="text-2xl text-project-gray-300">R${product?.price}</span></p>
               <div className="flex flex-col w-full gap-5">
                 <button onClick={() => {
                   setIsModalHistoryPriceProduct(true)

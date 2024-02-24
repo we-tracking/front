@@ -53,7 +53,7 @@ export function ModalHistoryPrices({ idProduct,idStore,setCloseModal, imgStore}:
             <Loading />
           ) : 
           (
-            data?.data.data.items.map((history) => (
+            data?.data.data.items?.map((history) => (
               <div key={history.checkTime} className="flex flex-col gap-1">
                 <span className="flex items-center gap-2 text-base text-project-gray-500">Preço: <p>R${history.price}</p></span>
                 <span className="flex items-center gap-2 text-base text-project-gray-500">Data: <p>{formatDate(history.checkTime)}</p></span>
