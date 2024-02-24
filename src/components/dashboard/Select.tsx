@@ -5,7 +5,8 @@ import { Dispatch, SetStateAction, useState } from "react";
 type SelectProps = {
   value: WebSourceProps[]
   setValue: Dispatch<SetStateAction<WebSourceProps[]>>;
-  options: WebSourceProps[];
+  options: WebSourceProps[] | any;
+  product?: any
 }
 
 
@@ -34,7 +35,7 @@ export function Select({value, setValue, options, product}: SelectProps) {
       <span className="flex flex-wrap gap-1 flex-grow text-project-gray-350">
         {!value.length && <p className="text-project-gray-500">Escolha os sites</p>}
         {product?.items.webSources.length ? (
-          product?.items.webSources.map((val) => (
+          product?.items.webSources.map((val: any) => (
             <button
               key={val.webSourceId}
               onClick={e => {
@@ -73,7 +74,7 @@ export function Select({value, setValue, options, product}: SelectProps) {
       <div className="bg-project-gray-500 self-stretch w-[.05em]"></div>
       <div className="translate-[0 25%] border-[.25em] border-transparent border-t-project-gray-500"></div>
       <ul className={`w-full absolute m-0 p-0 list-none min-h-full overflow-y-auto border border-project-blue-100 rounded-xl left-0 bg-project-gray-750 z-50 top-16 ${isSelectOpen ? "block" : "hidden"}`}>
-        {options?.map((option) => (
+        {options?.map((option: any) => (
           <li 
             key={option.id}
             onClick={(event) => {

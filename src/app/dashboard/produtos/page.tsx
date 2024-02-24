@@ -60,7 +60,7 @@ export default function DashboardUserProducts() {
         },
       });
       console.log("produto cadastrado", data)
-      if(data.status === 200) setTimeout(() => router.push(`/${data.data.data.id}`), 4000)
+      if(data.status === 200) setTimeout(() => router.push(`/dashboard/produtos/${data.data.data.id}`), 4000)
       
     } catch (error: any) {
       toast.error(error?.response.data.message)

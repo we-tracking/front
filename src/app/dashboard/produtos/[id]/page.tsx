@@ -20,7 +20,7 @@ export default function PageProductId({ params }: { params: { id: string } }) {
   const [name, setName] = useState("")
   const [ean, setEan] = useState("")
   const [imagePath, setImagePath] = useState("")
-  const [webSources, setWebSources] = useState<WebSourceProps[]>([])
+  const [webSources, setWebSources] = useState<WebSourceProps[] | any>([])
 
   const [idProduct, setIdProduct] = useState(0)
   const [idStore, setIdStore] = useState(0)
@@ -49,11 +49,11 @@ export default function PageProductId({ params }: { params: { id: string } }) {
     });
     setWebSources(storesRegistered)
   
-    const takeUrlRegistered = data?.data.data.items.webSources?.filter((item1) => {
-      return !dataWebSource?.data.data.some((item2) => Number(item2.webSourceId) === item1.id);
+    const takeUrlRegistered = data?.data.data.items.webSources?.filter((item1: any) => {
+      return !dataWebSource?.data.data.some((item2: any) => Number(item2.webSourceId) === item1.id);
     });
 
-    setUrlStores(takeUrlRegistered?.map(source => ({
+    setUrlStores(takeUrlRegistered?.map((source: any) => ({
       id: Number(source.webSourceId),
       url: source.url
     })));
@@ -84,7 +84,7 @@ export default function PageProductId({ params }: { params: { id: string } }) {
   if(isLoading || isLoadingProduct) {
     return <Loading />
   }
-
+  console.log(dataProductPrice)
   return (
     <main className="">
       <div className="grid grid-cols-3 items-start justify-between">

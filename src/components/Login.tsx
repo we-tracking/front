@@ -32,7 +32,7 @@ export function Login() {
         Cookies.set("user", "logado")
       }
       setTimeout(() => router.push("dashboard/home"), 4000)
-    } catch (error) {
+    } catch (error:any) {
       toast.error(error.response.data.message)
       setLoading(false)
     }
